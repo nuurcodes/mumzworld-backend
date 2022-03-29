@@ -6,19 +6,32 @@ import { GetUsersArgs } from './dto/args/get-users.args';
 import { DeleteUserInput } from './dto/input/delete-user.input';
 import { CreateUserInput } from './dto/input/create-user.input';
 import { UpdateUserInput } from './dto/input/update-user.input';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   private users: User[] = [];
 
-  public createUser(createUserData: CreateUserInput): User {
+  public async createUser(createUserData: CreateUserInput): Promise<User> {
+    const passwordInPlainText = createUserData.password;
+    const passwordHashed = await hash(passwordInPlainText, 10);
+
     const user: User = {
       userId: uuidv4(),
       ...createUserData,
+      password: passwordHashed,
     };
 
     this.users.push(user);
-    return user;
+
+    const { userId, email, age, isSubscribed } = user;
+
+    return {
+      userId,
+      email,
+      age,
+      isSubscribed,
+    };
   }
 
   public updateUser(updateUserData: UpdateUserInput): User {
@@ -28,6 +41,10 @@ export class UsersService {
 
     Object.assign(user, updateUserData);
     return user;
+  }
+
+  public getUserByEmail(email: string): User | undefined {
+    return this.users.find((user) => user.email === email);
   }
 
   public getUser(getUserArgs: GetUserArgs): User {
