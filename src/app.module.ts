@@ -13,6 +13,8 @@ import { DatabaseModule } from 'database/database.module';
       isGlobal: true,
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
+        JWT_EXPIRATION: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
         MONGODB_URI: Joi.string().required(),
       }),
     }),

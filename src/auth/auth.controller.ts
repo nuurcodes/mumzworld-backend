@@ -1,8 +1,9 @@
+import { Request, Response } from 'express';
 import { User } from 'users/models/user.model';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { CurrentUser } from './current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -10,8 +11,12 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Req() req: Request): { access_token: string } {
-    return this.authService.login(req.user as User);
+  async login(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    await this.authService.login(user, response);
+    response.send(user);
   }
 
   @Post('register')

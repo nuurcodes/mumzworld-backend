@@ -5,9 +5,9 @@ import { GetUsersArgs } from './dto/args/get-users.args';
 import { DeleteUserInput } from './dto/input/delete-user.input';
 import { CreateUserInput } from './dto/input/create-user.input';
 import { UpdateUserInput } from './dto/input/update-user.input';
-import { hash } from 'bcrypt';
 import { UsersRepository } from './users.repository';
 import { UserDocument } from './models/user.schema';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -27,14 +27,20 @@ export class UsersService {
     return this.toModel(userDocument);
   }
 
-  async updateUser(updateUserData: UpdateUserInput): Promise<User> {
-    const userDocument = await this.usersRepository.updateOne(updateUserData);
+  async updateUser(
+    updateUserData: UpdateUserInput,
+    userId: string,
+  ): Promise<User> {
+    const userDocument = await this.usersRepository.findOneAndUpdate(
+      { _id: userId },
+      updateUserData,
+    );
     return this.toModel(Object.assign(userDocument, updateUserData));
   }
 
   async getUserByEmail(email: string): Promise<User> {
     const userDocument = await this.usersRepository.findOne({ email });
-    return this.toModel(userDocument);
+    return this.toModel(userDocument, { includePassword: true });
   }
 
   async getUser(getUserArgs: GetUserArgs): Promise<User> {
@@ -58,16 +64,26 @@ export class UsersService {
 
   private async validateCreateUserData(createUserData: CreateUserInput) {
     try {
-      await this.usersRepository.findOne({ email: createUserData.email });
+      await this.usersRepository.findOne({
+        email: createUserData.email,
+      });
+      // TODO: Error is not thrown
       throw new UnprocessableEntityException('Email already exists');
     } catch (err) {}
   }
 
-  private toModel(userDocument: UserDocument): User {
+  private toModel(
+    userDocument: UserDocument,
+    options?: { includePassword: boolean },
+  ): User {
     return {
       _id: userDocument._id.toHexString(),
       email: userDocument.email,
       username: userDocument.username,
+      ...(options &&
+        options.includePassword && {
+          password: userDocument.password,
+        }),
     };
   }
 }

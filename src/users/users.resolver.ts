@@ -35,7 +35,10 @@ export class UsersResolver {
   async updateUser(
     @Args('updateUserData') updateUserData: UpdateUserInput,
   ): Promise<User> {
-    const user = this.usersService.updateUser(updateUserData);
+    const user = this.usersService.updateUser(
+      updateUserData,
+      updateUserData.userId,
+    );
     return user;
   }
 

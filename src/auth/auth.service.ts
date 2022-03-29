@@ -5,6 +5,7 @@ import { User } from 'users/models/user.model';
 import { UsersService } from 'users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserInput } from 'users/dto/input/create-user.input';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -27,15 +28,22 @@ export class AuthService {
     return isPasswordMatching ? user : null;
   }
 
-  login(user: User): { access_token: string } {
+  async login(user: User, response: Response) {
     const payload = {
       email: user.email,
       sub: user._id,
     };
 
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const expires = new Date();
+    expires.setSeconds(
+      expires.getSeconds() + this.configService.get('JWT_EXPIRATION'),
+    );
+    const token = this.jwtService.sign(payload);
+
+    response.cookie('Authentication', token, {
+      httpOnly: true,
+      expires,
+    });
   }
 
   async register(user: CreateUserInput): Promise<User> {
