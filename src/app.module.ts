@@ -4,16 +4,25 @@ import { UsersModule } from 'users/users.module';
 import { AuthModule } from 'auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import * as Joi from 'joi';
+import { DatabaseModule } from 'database/database.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        PORT: Joi.number().required(),
+        MONGODB_URI: Joi.string().required(),
+      }),
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
     UsersModule,
     AuthModule,
+    DatabaseModule,
   ],
   controllers: [],
   providers: [],

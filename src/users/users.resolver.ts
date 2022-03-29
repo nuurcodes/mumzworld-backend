@@ -1,4 +1,4 @@
-import { User } from 'users/models/user';
+import { User } from 'users/models/user.model';
 import { GetUserArgs } from 'users/dto/args/get-user.args';
 import { UsersService } from 'users/users.service';
 import { GetUsersArgs } from './dto/args/get-users.args';
@@ -12,13 +12,15 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => User, { name: 'user', nullable: true })
-  getUser(@Args() getUserArgs: GetUserArgs): User {
-    return this.usersService.getUser(getUserArgs);
+  async getUser(@Args() getUserArgs: GetUserArgs): Promise<User> {
+    const user = await this.usersService.getUser(getUserArgs);
+    return user;
   }
 
   @Query(() => [User], { name: 'users', nullable: 'items' })
-  getUsers(@Args() getUsersArgs: GetUsersArgs): User[] {
-    return this.usersService.getUsers(getUsersArgs);
+  async getUsers(@Args() getUsersArgs: GetUsersArgs): Promise<User[]> {
+    const users = await this.usersService.getUsers(getUsersArgs);
+    return users;
   }
 
   @Mutation(() => User)
@@ -30,12 +32,18 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserData') updateUserData: UpdateUserInput): User {
-    return this.usersService.updateUser(updateUserData);
+  async updateUser(
+    @Args('updateUserData') updateUserData: UpdateUserInput,
+  ): Promise<User> {
+    const user = this.usersService.updateUser(updateUserData);
+    return user;
   }
 
   @Mutation(() => User)
-  deleteUser(@Args('deleteUserData') deleteUserData: DeleteUserInput): User {
-    return this.usersService.deleteUser(deleteUserData);
+  async deleteUser(
+    @Args('deleteUserData') deleteUserData: DeleteUserInput,
+  ): Promise<User> {
+    const user = this.usersService.deleteUser(deleteUserData);
+    return user;
   }
 }
