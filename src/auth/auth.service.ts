@@ -1,7 +1,7 @@
 import { compare } from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'users/models/user';
+import { User } from 'users/models/user.model';
 import { UsersService } from 'users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserInput } from 'users/dto/input/create-user.input';
@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async validate(email: string, password: string): Promise<User | null> {
-    const user = this.usersService.getUserByEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
 
     if (!user) {
       return null;
@@ -30,7 +30,7 @@ export class AuthService {
   login(user: User): { access_token: string } {
     const payload = {
       email: user.email,
-      sub: user.userId,
+      sub: user._id,
     };
 
     return {
@@ -42,20 +42,20 @@ export class AuthService {
     const newUser = await this.usersService.createUser({
       email: user.email,
       password: user.password,
-      age: user.age,
+      username: user.username,
     });
 
     return newUser;
   }
 
   // Used to get user from token outside normal authentication flow
-  verify(token: string): User {
+  async verify(token: string): Promise<User> {
     const secret = this.configService.get('JWT_SECRET');
     const decoded = this.jwtService.verify(token, {
       secret,
     });
 
-    const user = this.usersService.getUserByEmail(decoded.email);
+    const user = await this.usersService.getUserByEmail(decoded.email);
 
     if (!user) {
       throw new Error('Unable to get user from the decoded token.');

@@ -1,4 +1,4 @@
-import { User } from 'users/models/user';
+import { User } from 'users/models/user.model';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
@@ -16,8 +16,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Req() req: Request): Promise<User> {
-    const { email, password, age } = req.body;
-    const user = await this.authService.register({ email, password, age });
+    const { email, password, username } = req.body;
+    const user = await this.authService.register({ email, password, username });
     return user;
   }
 }

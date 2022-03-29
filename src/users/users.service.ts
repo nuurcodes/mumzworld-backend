@@ -1,66 +1,73 @@
-import { v4 as uuidv4 } from 'uuid';
-import { User } from 'users/models/user';
-import { Injectable } from '@nestjs/common';
+import { User } from 'users/models/user.model';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { GetUserArgs } from './dto/args/get-user.args';
 import { GetUsersArgs } from './dto/args/get-users.args';
 import { DeleteUserInput } from './dto/input/delete-user.input';
 import { CreateUserInput } from './dto/input/create-user.input';
 import { UpdateUserInput } from './dto/input/update-user.input';
 import { hash } from 'bcrypt';
+import { UsersRepository } from './users.repository';
+import { UserDocument } from './models/user.schema';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  constructor(private readonly usersRepository: UsersRepository) {}
 
-  public async createUser(createUserData: CreateUserInput): Promise<User> {
+  async createUser(createUserData: CreateUserInput) {
+    await this.validateCreateUserData(createUserData);
+
     const passwordInPlainText = createUserData.password;
     const passwordHashed = await hash(passwordInPlainText, 10);
 
-    const user: User = {
-      userId: uuidv4(),
+    const userDocument = await this.usersRepository.create({
       ...createUserData,
       password: passwordHashed,
-    };
+    });
 
-    this.users.push(user);
+    return this.toModel(userDocument);
+  }
 
-    const { userId, email, age, isSubscribed } = user;
+  async updateUser(updateUserData: UpdateUserInput): Promise<User> {
+    const userDocument = await this.usersRepository.updateOne(updateUserData);
+    return this.toModel(Object.assign(userDocument, updateUserData));
+  }
 
+  async getUserByEmail(email: string): Promise<User> {
+    const userDocument = await this.usersRepository.findOne({ email });
+    return this.toModel(userDocument);
+  }
+
+  async getUser(getUserArgs: GetUserArgs): Promise<User> {
+    const userDocument = await this.usersRepository.findOne(getUserArgs);
+    return this.toModel(userDocument);
+  }
+
+  async getUsers(getUsersArgs: GetUsersArgs): Promise<User[]> {
+    const usersDocument = await this.usersRepository.find({
+      _id: { $in: getUsersArgs.userIds },
+    });
+    return usersDocument.map((doc) => this.toModel(doc));
+  }
+
+  async deleteUser(deleteUserData: DeleteUserInput): Promise<User> {
+    const userDocument = await this.usersRepository.delete({
+      _id: deleteUserData.userId,
+    });
+    return this.toModel(userDocument);
+  }
+
+  private async validateCreateUserData(createUserData: CreateUserInput) {
+    try {
+      await this.usersRepository.findOne({ email: createUserData.email });
+      throw new UnprocessableEntityException('Email already exists');
+    } catch (err) {}
+  }
+
+  private toModel(userDocument: UserDocument): User {
     return {
-      userId,
-      email,
-      age,
-      isSubscribed,
+      _id: userDocument._id.toHexString(),
+      email: userDocument.email,
+      username: userDocument.username,
     };
-  }
-
-  public updateUser(updateUserData: UpdateUserInput): User {
-    const user = this.users.find(
-      (user) => user.userId === updateUserData.userId,
-    );
-
-    Object.assign(user, updateUserData);
-    return user;
-  }
-
-  public getUserByEmail(email: string): User | undefined {
-    return this.users.find((user) => user.email === email);
-  }
-
-  public getUser(getUserArgs: GetUserArgs): User {
-    return this.users.find((user) => user.userId === getUserArgs.userId);
-  }
-
-  public getUsers(getUsersArgs: GetUsersArgs): User[] {
-    return getUsersArgs.userIds.map((userId) => this.getUser({ userId }));
-  }
-
-  public deleteUser(deleteUserData: DeleteUserInput): User {
-    const userIndex = this.users.findIndex(
-      (user) => user.userId === deleteUserData.userId,
-    );
-    const user = this.users[userIndex];
-    this.users.splice(userIndex);
-    return user;
   }
 }
