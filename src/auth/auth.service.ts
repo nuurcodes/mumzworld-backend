@@ -56,6 +56,13 @@ export class AuthService {
     return newUser;
   }
 
+  logout(response: Response) {
+    response.cookie('Authentication', '', {
+      httpOnly: true,
+      expires: new Date(),
+    });
+  }
+
   // Used to get user from token outside normal authentication flow
   async verify(token: string): Promise<User> {
     const secret = this.configService.get('JWT_SECRET');
