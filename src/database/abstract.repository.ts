@@ -36,20 +36,20 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return documents;
   }
 
-  // TODO: Remove finding first
-  async updateOne(updateQuery: UpdateQuery<TDocument>): Promise<TDocument> {
-    const document = await this.model.findOne(
-      { _id: updateQuery.userId },
-      {},
-      { lean: true },
-    );
+  async findOneAndUpdate(
+    filterQuery: FilterQuery<TDocument>,
+    update: UpdateQuery<TDocument>,
+  ): Promise<TDocument> {
+    const document = await this.model.findOneAndUpdate(filterQuery, update, {
+      lean: true,
+      new: true,
+    });
 
     if (!document) {
-      this.logger.warn('Document not found with update query', updateQuery);
+      this.logger.warn('Document not found with update query', filterQuery);
       throw new NotFoundException('Document not found');
     }
 
-    await this.model.updateOne({ _id: updateQuery.userId }, {}, { lean: true });
     return document;
   }
 
