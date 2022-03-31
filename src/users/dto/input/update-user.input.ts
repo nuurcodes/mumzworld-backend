@@ -7,8 +7,13 @@ export class UpdateUserInput {
   @IsNotEmpty()
   userId: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsOptional()
   @IsNotEmpty()
   username?: string;
+
+  @Field()
+  @IsOptional()
+  @IsNotEmpty()
+  imageUrl?: string;
 }

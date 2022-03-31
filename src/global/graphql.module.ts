@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ApolloDriver } from '@nestjs/apollo';
 import { ConfigService } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLModule as _GraphQLModule } from '@nestjs/graphql';
 
 @Module({
   imports: [
-    GraphQLModule.forRootAsync({
+    _GraphQLModule.forRootAsync({
       driver: ApolloDriver,
       useFactory: (configService: ConfigService) => ({
         autoSchemaFile: true,
@@ -18,4 +18,4 @@ import { GraphQLModule } from '@nestjs/graphql';
     }),
   ],
 })
-export class GlobalGraphQLModule {}
+export class GraphQLModule {}
