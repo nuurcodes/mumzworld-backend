@@ -6,8 +6,11 @@ export class User extends AbstractModel {
   @Field()
   email: string;
 
+  @Field()
+  username: string;
+
   @Field({ nullable: true })
-  username?: string;
+  imageUrl?: string;
 
   @Field({ nullable: true })
   password?: string;

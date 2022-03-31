@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { User } from 'users/models/user.model';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { CurrentUser } from './current-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -34,13 +34,6 @@ export class AuthController {
       email,
       username,
     });
-  }
-
-  @Post('register')
-  async register(@Req() req: Request): Promise<User> {
-    const { email, password, username } = req.body;
-    const user = await this.authService.register({ email, password, username });
-    return user;
   }
 
   @UseGuards(JwtAuthGuard)
