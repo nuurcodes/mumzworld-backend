@@ -1,17 +1,23 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AbstractModel } from 'common/abstract.model';
+import { Entity, Column } from 'typeorm';
 
 @ObjectType()
+@Entity()
 export class User extends AbstractModel {
   @Field()
+  @Column({ unique: true })
   email: string;
 
   @Field()
+  @Column()
   username: string;
 
   @Field({ nullable: true })
-  imageUrl?: string;
+  @Column({ nullable: true })
+  imageUrl: string;
 
   @Field({ nullable: true })
-  password?: string;
+  @Column({ nullable: true })
+  password: string;
 }

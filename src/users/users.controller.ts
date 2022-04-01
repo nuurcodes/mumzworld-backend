@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
-import { User } from './models/user.model';
+import { User } from './models/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -40,8 +40,8 @@ export class UsersController {
     }),
   )
   async upload(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    const { _id } = req.user as User;
+    const { id } = req.user as User;
     const imageUrl = this.configService.get('SERVER_URL') + '/' + file.path;
-    return this.usersService.updateUser({ imageUrl, userId: _id }, _id);
+    return this.usersService.update({ imageUrl, id }, id);
   }
 }

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { User } from 'users/models/user.model';
+import { User } from 'users/models/user.entity';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
@@ -17,9 +17,9 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authService.login(user, response);
-    const { _id, email, username } = user;
+    const { id, email, username } = user;
     response.send({
-      _id,
+      id,
       email,
       username,
     });
@@ -28,9 +28,9 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('verify')
   async verify(@CurrentUser() user: User, @Res() response: Response) {
-    const { _id, email, username } = user;
+    const { id, email, username } = user;
     response.send({
-      _id,
+      id,
       email,
       username,
     });
