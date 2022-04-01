@@ -44,7 +44,9 @@ export class UsersService {
   }
 
   async getUser(getUserArgs: GetUserArgs): Promise<User> {
-    const userDocument = await this.usersRepository.findOne(getUserArgs);
+    const userDocument = await this.usersRepository.findOne({
+      _id: getUserArgs.userId,
+    });
     return this.toModel(userDocument);
   }
 
