@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { User } from 'users/models/user.entity';
+import { User } from 'user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';

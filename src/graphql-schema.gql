@@ -10,15 +10,26 @@ type User {
   password: String
 }
 
+type Post {
+  id: String!
+  text: String!
+  user_id: String!
+  imageUrl: String
+  tags: [String!]
+}
+
 type Query {
   getAllUsers: [User!]
   getUserById(id: String!): User
+  getAllPosts: [Post!]
+  getPostById(id: String!): Post!
 }
 
 type Mutation {
   createUser(createUserData: CreateUserInput!): User!
-  update(updateUserData: UpdateUserInput!): User!
-  delete(deleteUserData: DeleteUserInput!): User!
+  update(updatePostData: UpdatePostInput!): Post!
+  delete(deletePostData: DeletePostInput!): Post!
+  createPost(createPostData: CreatePostInput!): Post!
 }
 
 input CreateUserInput {
@@ -27,12 +38,21 @@ input CreateUserInput {
   username: String!
 }
 
-input UpdateUserInput {
+input UpdatePostInput {
   id: String!
-  username: String!
-  imageUrl: String!
+  text: String
+  user_id: String
+  imageUrl: String
+  tags: [String!]
 }
 
-input DeleteUserInput {
+input DeletePostInput {
   id: String!
+}
+
+input CreatePostInput {
+  text: String!
+  user_id: String!
+  imageUrl: String
+  tags: [String!]
 }
