@@ -1,7 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 export class AbstractModel {
   @Field()
-  readonly _id: string;
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string;
 }

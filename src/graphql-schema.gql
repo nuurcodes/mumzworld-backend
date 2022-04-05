@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: String!
+  text: String!
+  imageUrl: String
+  tags: [String!]
+  user: User!
+}
+
+type User {
+  id: String!
+  email: String!
+  username: String!
+  imageUrl: String
+  password: String
+  posts: [Post!]
+}
+
+type Query {
+  getAllUsers: [User!]
+  getUserById(id: String!): User
+  getAllPosts: [Post!]
+  getPostById(id: String!): Post!
+}
+
+type Mutation {
+  createUser(createUserData: CreateUserInput!): User!
+  update(updatePostData: UpdatePostInput!): Post!
+  delete(deletePostData: DeletePostInput!): Post!
+  createPost(createPostData: CreatePostInput!): Post!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+input UpdatePostInput {
+  id: String!
+  text: String
+  imageUrl: String
+  tags: [String!]
+}
+
+input DeletePostInput {
+  id: String!
+}
+
+input CreatePostInput {
+  text: String!
+  imageUrl: String
+  tags: [String!]
+}

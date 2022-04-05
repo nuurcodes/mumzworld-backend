@@ -1,22 +1,22 @@
 import { compare } from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'users/models/user.model';
-import { UsersService } from 'users/users.service';
+import { User } from 'user/entities/user.entity';
+import { UserService } from 'user/user.service';
 import { ConfigService } from '@nestjs/config';
-import { CreateUserInput } from 'users/dto/input/create-user.input';
+import { CreateUserInput } from 'user/dto/input/create-user.input';
 import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 
   async validate(email: string, password: string): Promise<User | null> {
-    const user = await this.usersService.getUserByEmail(email);
+    const user = await this.userService.findOneByEmail(email);
 
     if (!user) {
       return null;
@@ -31,7 +31,7 @@ export class AuthService {
   async login(user: User, response: Response) {
     const payload = {
       email: user.email,
-      sub: user._id,
+      sub: user.id,
     };
 
     const expires = new Date();
@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   async register(user: CreateUserInput): Promise<User> {
-    const newUser = await this.usersService.createUser({
+    const newUser = await this.userService.create({
       email: user.email,
       password: user.password,
       username: user.username,
@@ -70,7 +70,7 @@ export class AuthService {
       secret,
     });
 
-    const user = await this.usersService.getUserByEmail(decoded.email);
+    const user = await this.userService.findOneByEmail(decoded.email);
 
     if (!user) {
       throw new Error('Unable to get user from the decoded token.');

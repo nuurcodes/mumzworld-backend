@@ -1,9 +1,9 @@
 import * as path from 'path';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
-import { User } from './models/user.model';
+import { User } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -18,7 +18,7 @@ import {
 @Controller('user')
 export class UsersController {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -29,7 +29,7 @@ export class UsersController {
       storage: diskStorage({
         destination: './uploads/profile_images',
         filename: (req, file, cb) => {
-          const userId = req['res']['req']['user']['_id'];
+          const userId = req['res']['req']['user']['id'];
           const fileName: string = userId;
           const extension: string = path.parse(file.originalname).ext;
 
@@ -40,8 +40,8 @@ export class UsersController {
     }),
   )
   async upload(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    const { _id } = req.user as User;
+    const { id } = req.user as User;
     const imageUrl = this.configService.get('SERVER_URL') + '/' + file.path;
-    await this.usersService.updateUser({ imageUrl, userId: _id }, _id);
+    return this.userService.update({ imageUrl, id }, id);
   }
 }

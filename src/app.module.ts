@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from 'users/users.module';
+import { UserModule } from 'user/user.module';
 import { AuthModule } from 'auth/auth.module';
-import { DatabaseModule } from 'database/database.module';
 import { GraphQLModule } from 'global/graphql.module';
 import { ConfigModule } from 'global/config.module';
 import { ServeStaticModule } from 'global/serve-static.module';
+import { TypeOrmModule } from 'global/typeorm.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
     ConfigModule,
     GraphQLModule,
-    UsersModule,
+    TypeOrmModule,
+    UserModule,
+    PostModule,
     AuthModule,
-    DatabaseModule,
     ServeStaticModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],
