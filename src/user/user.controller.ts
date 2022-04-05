@@ -42,6 +42,6 @@ export class UsersController {
   async upload(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
     const { id } = req.user as User;
     const imageUrl = this.configService.get('SERVER_URL') + '/' + file.path;
-    return this.userService.update({ imageUrl, id }, id);
+    return this.userService.update({ image_url: imageUrl, id }, id);
   }
 }

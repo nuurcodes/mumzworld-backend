@@ -9,7 +9,7 @@ export class UpdatePostInput {
   text?: string;
 
   @Field({ nullable: true })
-  imageUrl?: string;
+  image_url?: string;
 
   @Field(() => [String], { nullable: true })
   tags?: string[];

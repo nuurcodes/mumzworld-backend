@@ -15,5 +15,5 @@ export class UpdateUserInput {
   @Field()
   @IsOptional()
   @IsNotEmpty()
-  imageUrl?: string;
+  image_url?: string;
 }
