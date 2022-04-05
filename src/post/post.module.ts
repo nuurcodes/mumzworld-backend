@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsController } from './post.controller';
 import { Post } from './entities/post.entity';
 import { CommentModule } from 'comment/comment.module';
+import { LikeModule } from 'like/like.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post]), CommentModule],
+  imports: [TypeOrmModule.forFeature([Post]), CommentModule, LikeModule],
   controllers: [PostsController],
   providers: [PostResolver, PostService],
   exports: [PostService],

@@ -9,25 +9,30 @@ import { DeleteUserInput } from 'user/dto/input/delete-user.input';
 import { Comment } from 'comment/entities/comment.entity';
 import { CommentService } from 'comment/comment.service';
 import { User } from 'user/entities/user.entity';
+import { LikeService } from 'like/like.service';
+import { Like } from 'like/entities/like.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
     private readonly commentService: CommentService,
+    private readonly likeService: LikeService,
   ) {}
   async create(createPostData: CreatePostInput, user: User): Promise<Post> {
     return this.postRepository.save({ ...createPostData, user });
   }
 
   async findAll(): Promise<Post[]> {
-    return this.postRepository.find({ relations: ['user', 'comments'] });
+    return this.postRepository.find({
+      relations: ['user', 'comments', 'likes'],
+    });
   }
 
   async findOne(getPostArgs: GetPostArgs): Promise<Post> {
     return this.postRepository.findOne({
       where: { id: getPostArgs.id },
-      relations: ['user', 'comments'],
+      relations: ['user', 'comments', 'likes'],
     });
   }
 
@@ -44,5 +49,9 @@ export class PostService {
 
   async getComments(postId: string): Promise<Comment[]> {
     return this.commentService.findCommentsForPost(postId);
+  }
+
+  async getLikes(postId: string): Promise<Like[]> {
+    return this.likeService.findLikesForPost(postId);
   }
 }
