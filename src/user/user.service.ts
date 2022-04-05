@@ -25,20 +25,22 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find({ relations: ['posts', 'comments'] });
+    return await this.userRepository.find({
+      relations: ['posts', 'comments', 'likes'],
+    });
   }
 
   async findOne(getUserArgs: GetUserArgs): Promise<User> {
     return await this.userRepository.findOne({
       where: { id: getUserArgs.id },
-      relations: ['posts', 'comments'],
+      relations: ['posts', 'comments', 'likes'],
     });
   }
 
   async findOneByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { email },
-      relations: ['posts', 'comments'],
+      relations: ['posts', 'comments', 'likes'],
     });
   }
 

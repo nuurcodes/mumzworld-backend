@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Like {
+  id: String!
+  post_id: String!
+  user_id: String!
+  post: Post!
+  user: User!
+}
+
 type Post {
   id: String!
   text: String!
@@ -9,6 +17,7 @@ type Post {
   tags: [String!]
   user: User!
   comments: [Comment!]
+  likes: [Like!]
 }
 
 type Comment {
@@ -27,6 +36,7 @@ type User {
   image_url: String
   password: String
   posts: [Post!]
+  likes: [Like!]
   comments: [Comment!]
 }
 
@@ -36,14 +46,17 @@ type Query {
   getAllPosts: [Post!]
   getPostById(id: String!): Comment!
   getAllComments: [Comment!]
+  getAllLikes: [Like!]
+  getLikeById(id: String!): Like!
 }
 
 type Mutation {
   createUser(createUserData: CreateUserInput!): User!
   update(updatePostData: UpdatePostInput!): Post!
-  delete(deleteCommentData: DeleteCommentInput!): Comment!
+  delete(deleteLikeData: DeleteLikeInput!): Like!
   createPost(createPostData: CreatePostInput!): Post!
   createComment(createCommentData: CreateCommentInput!): Comment!
+  createLike(createLikeData: CreateLikeInput!): Like!
 }
 
 input CreateUserInput {
@@ -59,7 +72,7 @@ input UpdatePostInput {
   tags: [String!]
 }
 
-input DeleteCommentInput {
+input DeleteLikeInput {
   id: String!
 }
 
@@ -71,6 +84,11 @@ input CreatePostInput {
 
 input CreateCommentInput {
   text: String!
+  user_id: String!
+  post_id: String!
+}
+
+input CreateLikeInput {
   user_id: String!
   post_id: String!
 }

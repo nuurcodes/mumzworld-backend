@@ -16,6 +16,7 @@ import { UseGuards } from '@nestjs/common';
 import { User } from 'user/entities/user.entity';
 import { GqlAuthGuard } from 'auth/guards/gql-auth.guard';
 import { CurrentUser } from 'auth/current-user.decorator';
+import { Like } from 'like/entities/like.entity';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -57,5 +58,10 @@ export class PostResolver {
   @ResolveField(() => [Comment])
   async comments(@Parent() post: Post) {
     return this.postService.getComments(post.id);
+  }
+
+  @ResolveField(() => [Like])
+  async likes(@Parent() post: Post) {
+    return this.postService.getLikes(post.id);
   }
 }
