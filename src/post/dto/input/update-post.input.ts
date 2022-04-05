@@ -9,9 +9,6 @@ export class UpdatePostInput {
   text?: string;
 
   @Field({ nullable: true })
-  user_id?: string;
-
-  @Field({ nullable: true })
   imageUrl?: string;
 
   @Field(() => [String], { nullable: true })
