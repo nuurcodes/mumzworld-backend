@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Comment } from 'comment/entities/comment.entity';
 import { AbstractModel } from 'common/abstract.model';
 import { Post } from 'post/entities/post.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
@@ -16,7 +17,7 @@ export class User extends AbstractModel {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  imageUrl: string;
+  image_url: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
@@ -25,4 +26,8 @@ export class User extends AbstractModel {
   @OneToMany(() => Post, (post) => post.user)
   @Field(() => [Post], { nullable: true })
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  @Field(() => [Comment], { nullable: true })
+  comments: Comment[];
 }

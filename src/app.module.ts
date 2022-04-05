@@ -6,6 +6,7 @@ import { ConfigModule } from 'global/config.module';
 import { ServeStaticModule } from 'global/serve-static.module';
 import { TypeOrmModule } from 'global/typeorm.module';
 import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PostModule } from './post/post.module';
     AuthModule,
     ServeStaticModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],

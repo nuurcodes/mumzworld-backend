@@ -5,8 +5,18 @@
 type Post {
   id: String!
   text: String!
-  imageUrl: String
+  image_url: String
   tags: [String!]
+  user: User!
+  comments: [Comment!]
+}
+
+type Comment {
+  id: String!
+  text: String!
+  post_id: String!
+  user_id: String!
+  post: Post!
   user: User!
 }
 
@@ -14,23 +24,26 @@ type User {
   id: String!
   email: String!
   username: String!
-  imageUrl: String
+  image_url: String
   password: String
   posts: [Post!]
+  comments: [Comment!]
 }
 
 type Query {
   getAllUsers: [User!]
   getUserById(id: String!): User
   getAllPosts: [Post!]
-  getPostById(id: String!): Post!
+  getPostById(id: String!): Comment!
+  getAllComments: [Comment!]
 }
 
 type Mutation {
   createUser(createUserData: CreateUserInput!): User!
   update(updatePostData: UpdatePostInput!): Post!
-  delete(deletePostData: DeletePostInput!): Post!
+  delete(deleteCommentData: DeleteCommentInput!): Comment!
   createPost(createPostData: CreatePostInput!): Post!
+  createComment(createCommentData: CreateCommentInput!): Comment!
 }
 
 input CreateUserInput {
@@ -42,16 +55,22 @@ input CreateUserInput {
 input UpdatePostInput {
   id: String!
   text: String
-  imageUrl: String
+  image_url: String
   tags: [String!]
 }
 
-input DeletePostInput {
+input DeleteCommentInput {
   id: String!
 }
 
 input CreatePostInput {
   text: String!
-  imageUrl: String
+  image_url: String
   tags: [String!]
+}
+
+input CreateCommentInput {
+  text: String!
+  user_id: String!
+  post_id: String!
 }

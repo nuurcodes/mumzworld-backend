@@ -52,6 +52,6 @@ export class PostsController {
     @Query('postId') postId: string,
   ) {
     const imageUrl = this.configService.get('SERVER_URL') + '/' + file.path;
-    return this.postService.update({ imageUrl, id: postId }, postId);
+    return this.postService.update({ image_url: imageUrl, id: postId }, postId);
   }
 }
