@@ -4,6 +4,7 @@
 
 type Like {
   id: String!
+  created_at: String!
   post_id: String!
   user_id: String!
   post: Post!
@@ -12,6 +13,7 @@ type Like {
 
 type Post {
   id: String!
+  created_at: String!
   text: String!
   image_url: String
   tags: [String!]
@@ -22,6 +24,7 @@ type Post {
 
 type Comment {
   id: String!
+  created_at: String!
   text: String!
   post_id: String!
   user_id: String!
@@ -31,6 +34,7 @@ type Comment {
 
 type User {
   id: String!
+  created_at: String!
   email: String!
   username: String!
   image_url: String
