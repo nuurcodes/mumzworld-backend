@@ -84,6 +84,15 @@
       "ts"
     ],
     "rootDir": "src",
+    "moduleNameMapper": {
+      "@auth/(.*)": "<rootDir>/auth/$1",
+      "@comment/(.*)": "<rootDir>/comment/$1",
+      "@common/(.*)": "<rootDir>/common/$1",
+      "@global/(.*)": "<rootDir>/global/$1",
+      "@like/(.*)": "<rootDir>/like/$1",
+      "@post/(.*)": "<rootDir>/post/$1",
+      "@user/(.*)": "<rootDir>/user/$1"
+    },
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

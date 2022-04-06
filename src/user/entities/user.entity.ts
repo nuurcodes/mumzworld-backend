@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Comment } from 'comment/entities/comment.entity';
-import { AbstractModel } from 'common/abstract.model';
-import { Like } from 'like/entities/like.entity';
-import { Post } from 'post/entities/post.entity';
+import { Comment } from '@comment/entities/comment.entity';
+import { AbstractModel } from '@common/abstract.model';
+import { Like } from '@like/entities/like.entity';
+import { Post } from '@post/entities/post.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 
 @ObjectType()

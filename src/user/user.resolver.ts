@@ -1,9 +1,9 @@
-import { User } from 'user/entities/user.entity';
-import { GetUserArgs } from 'user/dto/args/get-user.args';
-import { UserService } from 'user/user.service';
-import { CreateUserInput } from './dto/input/create-user.input';
-import { UpdateUserInput } from './dto/input/update-user.input';
-import { DeleteUserInput } from './dto/input/delete-user.input';
+import { User } from '@user/entities/user.entity';
+import { GetUserArgs } from '@user/dto/args/get-user.args';
+import { UserService } from '@user/user.service';
+import { CreateUserInput } from '@user/dto/input/create-user.input';
+import { UpdateUserInput } from '@user/dto/input/update-user.input';
+import { DeleteUserInput } from '@user/dto/input/delete-user.input';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver(() => User)

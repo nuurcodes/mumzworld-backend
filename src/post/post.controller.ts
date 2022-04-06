@@ -1,11 +1,11 @@
 import * as path from 'path';
-import { PostService } from './post.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { diskStorage } from 'multer';
 import { ConfigService } from '@nestjs/config';
+import { PostService } from '@post/post.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CurrentUser } from 'auth/current-user.decorator';
-import { User } from 'user/entities/user.entity';
+import { CurrentUser } from '@auth/current-user.decorator';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { User } from '@user/entities/user.entity';
 import {
   BadRequestException,
   Controller,

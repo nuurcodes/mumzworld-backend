@@ -1,12 +1,12 @@
-import { User } from 'user/entities/user.entity';
-import { Injectable } from '@nestjs/common';
-import { GetUserArgs } from './dto/args/get-user.args';
-import { DeleteUserInput } from './dto/input/delete-user.input';
-import { CreateUserInput } from './dto/input/create-user.input';
-import { UpdateUserInput } from './dto/input/update-user.input';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
+import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '@user/entities/user.entity';
+import { GetUserArgs } from '@user/dto/args/get-user.args';
+import { DeleteUserInput } from '@user/dto/input/delete-user.input';
+import { CreateUserInput } from '@user/dto/input/create-user.input';
+import { UpdateUserInput } from '@user/dto/input/update-user.input';
 
 @Injectable()
 export class UserService {

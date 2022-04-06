@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PostService } from './post.service';
-import { PostResolver } from './post.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostsController } from './post.controller';
-import { Post } from './entities/post.entity';
-import { CommentModule } from 'comment/comment.module';
-import { LikeModule } from 'like/like.module';
+import { PostService } from '@post/post.service';
+import { PostResolver } from '@post/post.resolver';
+import { PostsController } from '@post/post.controller';
+import { Post } from '@post/entities/post.entity';
+import { CommentModule } from '@comment/comment.module';
+import { LikeModule } from '@like/like.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post]), CommentModule, LikeModule],

@@ -1,9 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Comment } from 'comment/entities/comment.entity';
-import { AbstractModel } from 'common/abstract.model';
-import { Like } from 'like/entities/like.entity';
+import { Comment } from '@comment/entities/comment.entity';
+import { AbstractModel } from '@common/abstract.model';
+import { Like } from '@like/entities/like.entity';
+import { User } from '@user/entities/user.entity';
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { User } from 'user/entities/user.entity';
 
 @ObjectType()
 @Entity()

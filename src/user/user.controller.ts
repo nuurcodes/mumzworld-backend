@@ -1,9 +1,9 @@
 import * as path from 'path';
-import { UserService } from './user.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserService } from '@user/user.service';
+import { User } from '@user/entities/user.entity';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
-import { User } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -27,7 +27,7 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/profile_images',
+        destination: '@user/uploads/profile_images',
         filename: (req, file, cb) => {
           const userId = req['res']['req']['user']['id'];
           const fileName: string = userId;

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateLikeInput } from './dto/input/create-like.input';
-import { DeleteLikeInput } from './dto/input/delete-like.input';
-import { User } from 'user/entities/user.entity';
-import { Like } from './entities/like.entity';
-import { GetLikeArgs } from './dto/args/get-like.args';
+import { CreateLikeInput } from '@like/dto/input/create-like.input';
+import { DeleteLikeInput } from '@like/dto/input/delete-like.input';
+import { GetLikeArgs } from '@like/dto/args/get-like.args';
+import { Like } from '@like/entities/like.entity';
+import { User } from '@user/entities/user.entity';
 
 @Injectable()
 export class LikeService {
