@@ -22,9 +22,9 @@ import { Like } from 'like/entities/like.entity';
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
-  @Mutation(() => Post)
+  @Mutation(() => Post, { name: 'createPost' })
   @UseGuards(GqlAuthGuard)
-  createPost(
+  create(
     @Args('createPostData') createPostData: CreatePostInput,
     @CurrentUser() user: User,
   ) {
@@ -41,18 +41,22 @@ export class PostResolver {
     return this.postService.findOne({ id: getPostArgs.id });
   }
 
-  @Mutation(() => Post)
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Post, { name: 'updatePost' })
   async update(
     @Args('updatePostData') updatePostData: UpdatePostInput,
+    @CurrentUser() user: User,
   ): Promise<Post> {
-    return this.postService.update(updatePostData, updatePostData.id);
+    return this.postService.update(updatePostData, updatePostData.id, user);
   }
 
-  @Mutation(() => Post)
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Post, { name: 'deletePost' })
   async delete(
     @Args('deletePostData') deletePostData: DeletePostInput,
+    @CurrentUser() user: User,
   ): Promise<Post> {
-    return this.postService.delete(deletePostData);
+    return this.postService.delete(deletePostData, user);
   }
 
   @ResolveField(() => [Comment])

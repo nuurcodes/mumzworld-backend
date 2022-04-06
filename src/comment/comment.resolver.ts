@@ -13,9 +13,9 @@ import { DeleteCommentInput } from './dto/input/delete-comment.input';
 export class CommentResolver {
   constructor(private readonly commentService: CommentService) {}
 
-  @Mutation(() => Comment)
   @UseGuards(GqlAuthGuard)
-  async createComment(
+  @Mutation(() => Comment, { name: 'createComment' })
+  async create(
     @Args('createCommentData') createCommentInput: CreateCommentInput,
     @CurrentUser() user: User,
   ) {
@@ -32,10 +32,12 @@ export class CommentResolver {
     return this.commentService.findOne({ id: getCommentArgs.id });
   }
 
-  @Mutation(() => Comment)
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Comment, { name: 'deleteComment' })
   async delete(
     @Args('deleteCommentData') deleteCommentData: DeleteCommentInput,
+    @CurrentUser() user: User,
   ) {
-    return this.commentService.delete(deleteCommentData);
+    return this.commentService.delete(deleteCommentData, user);
   }
 }

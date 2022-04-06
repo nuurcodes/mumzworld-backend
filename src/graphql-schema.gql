@@ -52,11 +52,15 @@ type Query {
 
 type Mutation {
   createUser(createUserData: CreateUserInput!): User!
-  update(updatePostData: UpdatePostInput!): Post!
-  delete(deleteLikeData: DeleteLikeInput!): Like!
+  updateUser(updateUserData: UpdateUserInput!): User!
+  deleteUser(deleteUserData: DeleteUserInput!): User!
   createPost(createPostData: CreatePostInput!): Post!
+  updatePost(updatePostData: UpdatePostInput!): Post!
+  deletePost(deletePostData: DeletePostInput!): Post!
   createComment(createCommentData: CreateCommentInput!): Comment!
+  deleteComment(deleteCommentData: DeleteCommentInput!): Comment!
   createLike(createLikeData: CreateLikeInput!): Like!
+  deleteLike(deleteLikeData: DeleteLikeInput!): Like!
 }
 
 input CreateUserInput {
@@ -65,14 +69,13 @@ input CreateUserInput {
   username: String!
 }
 
-input UpdatePostInput {
+input UpdateUserInput {
   id: String!
-  text: String
-  image_url: String
-  tags: [String!]
+  username: String!
+  image_url: String!
 }
 
-input DeleteLikeInput {
+input DeleteUserInput {
   id: String!
 }
 
@@ -82,13 +85,32 @@ input CreatePostInput {
   tags: [String!]
 }
 
+input UpdatePostInput {
+  id: String!
+  text: String
+  image_url: String
+  tags: [String!]
+}
+
+input DeletePostInput {
+  id: String!
+}
+
 input CreateCommentInput {
   text: String!
   user_id: String!
   post_id: String!
 }
 
+input DeleteCommentInput {
+  id: String!
+}
+
 input CreateLikeInput {
   user_id: String!
   post_id: String!
+}
+
+input DeleteLikeInput {
+  id: String!
 }
