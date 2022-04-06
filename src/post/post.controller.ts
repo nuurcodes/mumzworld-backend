@@ -4,6 +4,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { diskStorage } from 'multer';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CurrentUser } from 'auth/current-user.decorator';
+import { User } from 'user/entities/user.entity';
 import {
   BadRequestException,
   Controller,
@@ -50,8 +52,13 @@ export class PostsController {
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Query('postId') postId: string,
+    @CurrentUser() user: User,
   ) {
     const imageUrl = this.configService.get('SERVER_URL') + '/' + file.path;
-    return this.postService.update({ image_url: imageUrl, id: postId }, postId);
+    return this.postService.update(
+      { image_url: imageUrl, id: postId },
+      postId,
+      user,
+    );
   }
 }

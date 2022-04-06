@@ -36,15 +36,34 @@ export class PostService {
     });
   }
 
-  async update(updatePostData: UpdatePostInput, id: string): Promise<Post> {
-    await this.postRepository.update(id, updatePostData);
+  async findOneFromUser(getPostArgs: GetPostArgs, user: User): Promise<Post> {
+    return this.postRepository.findOne({
+      where: { id: getPostArgs.id, user: { id: user.id } },
+      relations: ['user', 'comments', 'likes'],
+    });
+  }
+
+  async update(
+    updatePostData: UpdatePostInput,
+    id: string,
+    user: User,
+  ): Promise<Post> {
+    await this.postRepository.update(
+      { id, user: { id: user.id } },
+      updatePostData,
+    );
     return this.findOne({ id });
   }
 
-  async delete(deleteUserData: DeleteUserInput): Promise<Post> {
-    const user = await this.findOne({ id: deleteUserData.id });
+  async delete(deleteUserData: DeleteUserInput, user: User): Promise<Post> {
+    const post = await this.findOneFromUser(
+      {
+        id: deleteUserData.id,
+      },
+      user,
+    );
     await this.postRepository.delete(deleteUserData.id);
-    return user;
+    return post;
   }
 
   async getComments(postId: string): Promise<Comment[]> {

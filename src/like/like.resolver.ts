@@ -13,9 +13,9 @@ import { DeleteLikeInput } from './dto/input/delete-like.input';
 export class LikeResolver {
   constructor(private readonly likeService: LikeService) {}
 
-  @Mutation(() => Like)
+  @Mutation(() => Like, { name: 'createLike' })
   @UseGuards(GqlAuthGuard)
-  async createLike(
+  async create(
     @Args('createLikeData') createLikeInput: CreateLikeInput,
     @CurrentUser() user: User,
   ) {
@@ -32,8 +32,12 @@ export class LikeResolver {
     return this.likeService.findOne({ id: getLikeArgs.id });
   }
 
-  @Mutation(() => Like)
-  async delete(@Args('deleteLikeData') deleteLikeData: DeleteLikeInput) {
-    return this.likeService.delete(deleteLikeData);
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Like, { name: 'deleteLike' })
+  async delete(
+    @Args('deleteLikeData') deleteLikeData: DeleteLikeInput,
+    @CurrentUser() user: User,
+  ) {
+    return this.likeService.delete(deleteLikeData, user);
   }
 }

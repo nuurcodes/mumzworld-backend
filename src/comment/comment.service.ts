@@ -35,12 +35,28 @@ export class CommentService {
     });
   }
 
+  async findOneFromUser(
+    getCommentArgs: GetCommentArgs,
+    user: User,
+  ): Promise<Comment> {
+    return this.commentRepository.findOne({
+      where: { id: getCommentArgs.id, user_id: user.id },
+      relations: ['post', 'user'],
+    });
+  }
+
   async findAll(): Promise<Comment[]> {
     return this.commentRepository.find({ relations: ['post', 'user'] });
   }
 
-  async delete(deleteCommentData: DeleteCommentInput): Promise<Comment> {
-    const comment = await this.findOne({ id: deleteCommentData.id });
+  async delete(
+    deleteCommentData: DeleteCommentInput,
+    user: User,
+  ): Promise<Comment> {
+    const comment = await this.findOneFromUser(
+      { id: deleteCommentData.id },
+      user,
+    );
     await this.commentRepository.delete(deleteCommentData.id);
     return comment;
   }

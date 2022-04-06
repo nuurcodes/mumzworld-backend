@@ -35,12 +35,22 @@ export class LikeService {
     });
   }
 
+  async findOneFromUser(getLikeArgs: GetLikeArgs, user: User): Promise<Like> {
+    return this.likeRepository.findOne({
+      where: { id: getLikeArgs.id, user_id: user.id },
+      relations: ['post', 'user'],
+    });
+  }
+
   async findAll(): Promise<Like[]> {
     return this.likeRepository.find({ relations: ['post', 'user'] });
   }
 
-  async delete(deleteCommentData: DeleteLikeInput): Promise<Like> {
-    const comment = await this.findOne({ id: deleteCommentData.id });
+  async delete(deleteCommentData: DeleteLikeInput, user: User): Promise<Like> {
+    const comment = await this.findOneFromUser(
+      { id: deleteCommentData.id },
+      user,
+    );
     await this.likeRepository.delete(deleteCommentData.id);
     return comment;
   }
