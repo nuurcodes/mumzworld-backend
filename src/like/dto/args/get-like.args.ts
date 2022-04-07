@@ -1,9 +1,13 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
 
 @ArgsType()
 export class GetLikeArgs {
   @Field()
-  @IsNotEmpty()
-  id: string;
+  id?: string;
+
+  @Field()
+  user_id?: string;
+
+  @Field()
+  post_id?: string;
 }
