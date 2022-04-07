@@ -6,17 +6,17 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { PostService } from './post.service';
-import { Post } from './entities/post.entity';
-import { CreatePostInput } from './dto/input/create-post.input';
-import { UpdatePostInput } from './dto/input/update-post.input';
-import { GetPostArgs } from './dto/args/get-post.args';
-import { DeletePostInput } from './dto/input/delete-post.input';
+import { PostService } from '@post/post.service';
+import { Post } from '@post/entities/post.entity';
+import { CreatePostInput } from '@post/dto/input/create-post.input';
+import { UpdatePostInput } from '@post/dto/input/update-post.input';
+import { GetPostArgs } from '@post/dto/args/get-post.args';
+import { DeletePostInput } from '@post/dto/input/delete-post.input';
+import { User } from '@user/entities/user.entity';
+import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
+import { CurrentUser } from '@auth/current-user.decorator';
+import { Like } from '@like/entities/like.entity';
 import { UseGuards } from '@nestjs/common';
-import { User } from 'user/entities/user.entity';
-import { GqlAuthGuard } from 'auth/guards/gql-auth.guard';
-import { CurrentUser } from 'auth/current-user.decorator';
-import { Like } from 'like/entities/like.entity';
 
 @Resolver(() => Post)
 export class PostResolver {

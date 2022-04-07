@@ -1,16 +1,16 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { CreatePostInput } from './dto/input/create-post.input';
-import { UpdatePostInput } from './dto/input/update-post.input';
-import { Post } from './entities/post.entity';
-import { GetPostArgs } from './dto/args/get-post.args';
-import { DeleteUserInput } from 'user/dto/input/delete-user.input';
-import { Comment } from 'comment/entities/comment.entity';
-import { CommentService } from 'comment/comment.service';
-import { User } from 'user/entities/user.entity';
-import { LikeService } from 'like/like.service';
-import { Like } from 'like/entities/like.entity';
+import { CreatePostInput } from '@post/dto/input/create-post.input';
+import { UpdatePostInput } from '@post/dto/input/update-post.input';
+import { Post } from '@post/entities/post.entity';
+import { GetPostArgs } from '@post/dto/args/get-post.args';
+import { DeleteUserInput } from '@user/dto/input/delete-user.input';
+import { User } from '@user/entities/user.entity';
+import { Comment } from '@comment/entities/comment.entity';
+import { CommentService } from '@comment/comment.service';
+import { LikeService } from '@like/like.service';
+import { Like } from '@like/entities/like.entity';
 
 @Injectable()
 export class PostService {

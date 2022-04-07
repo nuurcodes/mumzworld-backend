@@ -1,10 +1,10 @@
 import { compare } from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'user/entities/user.entity';
-import { UserService } from 'user/user.service';
+import { User } from '@user/entities/user.entity';
+import { UserService } from '@user/user.service';
+import { CreateUserInput } from '@user/dto/input/create-user.input';
 import { ConfigService } from '@nestjs/config';
-import { CreateUserInput } from 'user/dto/input/create-user.input';
 import { Response } from 'express';
 
 @Injectable()

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCommentInput } from './dto/input/create-comment.input';
-import { DeleteCommentInput } from './dto/input/delete-comment.input';
-import { Comment } from './entities/comment.entity';
-import { GetCommentArgs } from './dto/args/get-comment.args';
-import { User } from 'user/entities/user.entity';
+import { CreateCommentInput } from '@comment/dto/input/create-comment.input';
+import { DeleteCommentInput } from '@comment/dto/input/delete-comment.input';
+import { Comment } from '@comment/entities/comment.entity';
+import { GetCommentArgs } from '@comment/dto/args/get-comment.args';
+import { User } from '@user/entities/user.entity';
 
 @Injectable()
 export class CommentService {

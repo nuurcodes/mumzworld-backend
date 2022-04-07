@@ -51,7 +51,7 @@ type Query {
   getPostById(id: String!): Comment!
   getAllComments: [Comment!]
   getAllLikes: [Like!]
-  getLikeById(id: String!): Like!
+  getLikeById(id: String!, user_id: String!, post_id: String!): Like!
 }
 
 type Mutation {

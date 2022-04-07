@@ -1,13 +1,13 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { LikeService } from './like.service';
-import { Like } from './entities/like.entity';
-import { CreateLikeInput } from './dto/input/create-like.input';
-import { CurrentUser } from 'auth/current-user.decorator';
-import { User } from 'user/entities/user.entity';
+import { LikeService } from '@like/like.service';
+import { Like } from '@like/entities/like.entity';
+import { CreateLikeInput } from '@like/dto/input/create-like.input';
+import { GetLikeArgs } from '@like/dto/args/get-like.args';
+import { DeleteLikeInput } from '@like/dto/input/delete-like.input';
+import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
+import { CurrentUser } from '@auth/current-user.decorator';
+import { User } from '@user/entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'auth/guards/gql-auth.guard';
-import { GetLikeArgs } from './dto/args/get-like.args';
-import { DeleteLikeInput } from './dto/input/delete-like.input';
 
 @Resolver(() => Like)
 export class LikeResolver {

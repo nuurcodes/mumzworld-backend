@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateLikeInput } from './dto/input/create-like.input';
-import { DeleteLikeInput } from './dto/input/delete-like.input';
-import { User } from 'user/entities/user.entity';
-import { Like } from './entities/like.entity';
-import { GetLikeArgs } from './dto/args/get-like.args';
+import { CreateLikeInput } from '@like/dto/input/create-like.input';
+import { DeleteLikeInput } from '@like/dto/input/delete-like.input';
+import { GetLikeArgs } from '@like/dto/args/get-like.args';
+import { Like } from '@like/entities/like.entity';
+import { User } from '@user/entities/user.entity';
 
 @Injectable()
 export class LikeService {
@@ -14,11 +14,19 @@ export class LikeService {
     private readonly likeRepository: Repository<Like>,
   ) {}
 
-  async create(createCommentData: CreateLikeInput, user: User) {
-    return this.likeRepository.save({
-      ...createCommentData,
-      user,
-    });
+  async create(createLikeData: CreateLikeInput, user: User) {
+    try {
+      const like = await this.findOne({
+        post_id: createLikeData.post_id,
+        user_id: user.id,
+      });
+      return this.delete({ id: like.id }, user);
+    } catch {
+      return this.likeRepository.save({
+        ...createLikeData,
+        user,
+      });
+    }
   }
 
   async findLikesForPost(postId: string): Promise<Like[]> {
@@ -30,7 +38,7 @@ export class LikeService {
 
   async findOne(getLikeArgs: GetLikeArgs): Promise<Like> {
     return this.likeRepository.findOne({
-      where: { id: getLikeArgs.id },
+      where: { ...getLikeArgs },
       relations: ['post', 'user'],
     });
   }

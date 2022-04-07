@@ -1,13 +1,13 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { CommentService } from './comment.service';
-import { Comment } from './entities/comment.entity';
-import { CreateCommentInput } from './dto/input/create-comment.input';
-import { CurrentUser } from 'auth/current-user.decorator';
-import { User } from 'user/entities/user.entity';
+import { CommentService } from '@comment/comment.service';
+import { Comment } from '@comment/entities/comment.entity';
+import { CreateCommentInput } from '@comment/dto/input/create-comment.input';
+import { DeleteCommentInput } from '@comment/dto/input/delete-comment.input';
+import { GetCommentArgs } from '@comment/dto/args/get-comment.args';
+import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
+import { CurrentUser } from '@auth/current-user.decorator';
+import { User } from '@user/entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'auth/guards/gql-auth.guard';
-import { GetCommentArgs } from './dto/args/get-comment.args';
-import { DeleteCommentInput } from './dto/input/delete-comment.input';
 
 @Resolver(() => Comment)
 export class CommentResolver {
