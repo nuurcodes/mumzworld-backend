@@ -27,7 +27,7 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: '@user/uploads/profile_images',
+        destination: './uploads/profile_images',
         filename: (req, file, cb) => {
           const userId = req['res']['req']['user']['id'];
           const fileName: string = userId;

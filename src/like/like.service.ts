@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLikeInput } from '@like/dto/input/create-like.input';
@@ -6,12 +6,16 @@ import { DeleteLikeInput } from '@like/dto/input/delete-like.input';
 import { GetLikeArgs } from '@like/dto/args/get-like.args';
 import { Like } from '@like/entities/like.entity';
 import { User } from '@user/entities/user.entity';
+import { Post } from '@post/entities/post.entity';
+import { PostService } from '@post/post.service';
 
 @Injectable()
 export class LikeService {
   constructor(
     @InjectRepository(Like)
     private readonly likeRepository: Repository<Like>,
+    @Inject(forwardRef(() => PostService))
+    private readonly postService: PostService,
   ) {}
 
   async create(createLikeData: CreateLikeInput, user: User) {
@@ -61,5 +65,9 @@ export class LikeService {
     );
     await this.likeRepository.delete(deleteCommentData.id);
     return comment;
+  }
+
+  async getPost(postId: string): Promise<Post> {
+    return this.postService.findOne({ id: postId });
   }
 }

@@ -75,8 +75,8 @@ input CreateUserInput {
 
 input UpdateUserInput {
   id: String!
-  username: String!
-  image_url: String!
+  username: String
+  image_url: String
 }
 
 input DeleteUserInput {
