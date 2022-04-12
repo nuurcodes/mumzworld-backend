@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreatePostInput } from '@post/dto/input/create-post.input';
 import { UpdatePostInput } from '@post/dto/input/update-post.input';
 import { Post } from '@post/entities/post.entity';
@@ -17,6 +17,7 @@ export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
     private readonly commentService: CommentService,
+    @Inject(forwardRef(() => LikeService))
     private readonly likeService: LikeService,
   ) {}
   async create(createPostData: CreatePostInput, user: User): Promise<Post> {

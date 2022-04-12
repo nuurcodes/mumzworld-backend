@@ -17,22 +17,24 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authService.login(user, response);
-    const { id, email, username } = user;
+    const { id, email, username, image_url } = user;
     response.send({
       id,
       email,
       username,
+      image_url,
     });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('verify')
   async verify(@CurrentUser() user: User, @Res() response: Response) {
-    const { id, email, username } = user;
+    const { id, email, username, image_url } = user;
     response.send({
       id,
       email,
       username,
+      image_url,
     });
   }
 
