@@ -44,6 +44,7 @@ export class AuthService {
     response.cookie('Authentication', token, {
       httpOnly: true,
       expires,
+      secure: env.NODE_ENV === 'production' ? true : false,
       domain:
         env.NODE_ENV === 'production'
           ? '.mumzworld-frontend.vercel.com'
@@ -65,6 +66,7 @@ export class AuthService {
     response.cookie('Authentication', '', {
       httpOnly: true,
       expires: new Date(),
+      secure: env.NODE_ENV === 'production' ? true : false,
       domain:
         env.NODE_ENV === 'production'
           ? '.mumzworld-frontend.vercel.com'
