@@ -11,7 +11,7 @@ import { join } from 'path';
       useFactory: (configService: ConfigService) => ({
         autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
         cors: {
-          origin: '*',
+          origin: configService.get('CLIENT_URL'),
           credentials: true,
         },
       }),
