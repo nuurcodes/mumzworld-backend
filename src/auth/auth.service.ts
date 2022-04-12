@@ -6,6 +6,7 @@ import { UserService } from '@user/user.service';
 import { CreateUserInput } from '@user/dto/input/create-user.input';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { env } from 'process';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +44,10 @@ export class AuthService {
     response.cookie('Authentication', token, {
       httpOnly: true,
       expires,
+      domain:
+        env.NODE_ENV === 'production'
+          ? '.mumzworld-frontend.vercel.com'
+          : undefined,
     });
   }
 
@@ -60,6 +65,10 @@ export class AuthService {
     response.cookie('Authentication', '', {
       httpOnly: true,
       expires: new Date(),
+      domain:
+        env.NODE_ENV === 'production'
+          ? '.mumzworld-frontend.vercel.com'
+          : undefined,
     });
   }
 
